@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PhotoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-Route::get('/hello', function () {
- return 'Hello World';
+Route::get('/', function () {
+    return view('welcome');
 });
 
 Route::get('/world', function () {
@@ -69,19 +71,50 @@ Route::domain('{account}.example.com')->group(function () {
  //
  });
 });
-Route::middleware('auth')->group(function () {
-Route::get('/user', [UserController::class, 'index']);
-Route::get('/post', [PostController::class, 'index']);
-Route::get('/event', [EventController::class, 'index']);
-});
+// Route::middleware('auth')->group(function () {
+// Route::get('/user', [UserController::class, 'index']);
+// Route::get('/post', [PostController::class, 'index']);
+// Route::get('/event', [EventController::class, 'index']);
+// });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/user', [UserController::class, 'index']);
-    Route::get('/post', [PostController::class, 'index']);
-    Route::get('/event', [EventController::class, 'index']);
-    });
+// Route::prefix('admin')->group(function () {
+//     Route::get('/user', [UserController::class, 'index']);
+//     Route::get('/post', [PostController::class, 'index']);
+//     Route::get('/event', [EventController::class, 'index']);
+//     });
 
-    Route::redirect('/here', '/there');
+//     Route::redirect('/here', '/there');
 
-    Route::view('/welcome', 'welcome');
-Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+//     Route::view('/welcome', 'welcome');
+// Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
+
+// Route::get('/hello', 
+//     [WelcomeController::class,'hello']);
+
+Route::get('/', 
+    [PageController::class, 'index']);
+
+Route::get('/about', 
+    [PageController::class, 'about']);
+
+Route::get('/articles/{id}', 
+    [PageController::class, 'articles']);
+
+Route::get('/', 
+    HomeController::class);
+
+Route::get('/about', 
+    AboutController::class);
+    
+Route::get('/articles/{id}', 
+    ArticleController::class);
+
+Route::resource('photos', PhotoController::class);
+
+Route::resource('photos', PhotoController::class)->only([
+    'index', 'show'
+   ]);
+
+Route::resource('photos', PhotoController::class)->except([
+    'create', 'store', 'update', 'destroy'
+   ]);
